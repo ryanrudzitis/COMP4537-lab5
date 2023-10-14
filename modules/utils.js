@@ -15,7 +15,7 @@ module.exports = {
         mysql.connect(err => {
             if (err) {
                 res.statusCode = 500;
-                res.end(JSON.stringify({ message: 'Internal server error' }));
+                res.end(JSON.stringify({ message: 'Cannot connect to database' }));
                 return;
             }
 
@@ -45,7 +45,8 @@ module.exports = {
         mysql.connect(err => {
             if (err) {
                 res.statusCode = 500;
-                res.end(JSON.stringify({ message: 'Internal server error' }));
+                console.log(err)
+                res.end(JSON.stringify({ message: 'Could not connect to the database' }));
                 return;
             }
 

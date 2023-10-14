@@ -9,6 +9,7 @@ http.createServer((req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
 
     const parsedUrl = url.parse(req.url, true);
@@ -24,7 +25,6 @@ http.createServer((req, res) => {
         }
 
         const dbquery = query.dbquery;
-
         if (utils.invalidSqlAction(dbquery, 'INSERT')) {
             res.statusCode = 400;
             res.end(JSON.stringify({ message: 'Get request cannot contain DROP, DELETE, UPDATE, or INSERT statements' }));
@@ -37,7 +37,6 @@ http.createServer((req, res) => {
 
     } else if (req.method === 'POST' && pathName === rootEndPoint) {
         let body = '';
-
         req.on('data', chunk => {
             if (chunk !== null) {
                 body += chunk;
@@ -65,7 +64,9 @@ http.createServer((req, res) => {
             const mysql = utils.mysqlConnection();
 
             utils.mysqlExecStatement(mysql, patientTableStatement, dbquery, res);
-        });
+        }
+        
+        );
     }
 
-}).listen(5000);
+}).listen(6001);
