@@ -1,6 +1,9 @@
-let addRowButton = document.querySelector('#insert-row-btn');
-let textArea = document.querySelector('#text-area');
-let submitQueryButton = document.querySelector('#submit-query-btn');
+const INVALID_QUERY = "Invalid query";
+
+const responseP = document.querySelector('#response');
+const addRowButton = document.querySelector('#insert-row-btn');
+const textArea = document.querySelector('#text-area');
+const submitQueryButton = document.querySelector('#submit-query-btn');
 const xhttp = new XMLHttpRequest();
 
 
@@ -20,5 +23,29 @@ addRowButton.addEventListener('click', function() {
 });
 
 submitQueryButton.addEventListener('click', function() {
-  console.log("submit query button clicked");
+
+  const query = textArea.value;
+  const firstWord = query.split(' ')[0];
+
+  console.log(query);
+
+  if (firstWord.toUpperCase() === 'SELECT') {
+    xhttp.open("GET", "http://localhost:5000/COMP4537/labs/5/api/v1/sql/?dbquery=" + query, true);
+    xhttp.send();
+  } else if (firstWord.toUpperCase() === 'INSERT') {
+    xhttp.open("POST", "http://localhost:5000/COMP4537/labs/5/api/v1/sql/", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send("dbquery=" + query);
+  } else {
+    responseP.textContent = INVALID_QUERY;
+    responseP.style.color = "red";
+  }
+
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      responseP.textContent = this.responseText;
+    }
+  };
+
+
 });
