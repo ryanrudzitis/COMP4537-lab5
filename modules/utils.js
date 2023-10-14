@@ -41,6 +41,36 @@ module.exports = {
         });
     },
 
+    mysqlQuery: function (mysql, patientTableStatement, dbquery, res) {
+        mysql.connect(err => {
+            if (err) {
+                res.statusCode = 500;
+                res.end(JSON.stringify({ message: 'Internal server error' }));
+                return;
+            }
+
+            mysql.query(patientTableStatement, (err) => {
+                if (err) {
+                    res.statusCode = 400;
+                    res.end(JSON.stringify({ message: 'Invalid SQL statement' }));
+                    return;
+                }
+
+                mysql.query(dbquery, (err, results) => {
+                    if (err) {
+                        res.statusCode = 400;
+                        res.end(JSON.stringify({ message: 'Invalid SQL statement' }));
+                        return;
+                    }
+    
+                    res.end(JSON.stringify({ message: 'Statement executed successfully', result: results}));
+                    mysql.end();
+                    return;
+                });
+            });
+        });
+    },
+
     invalidSqlAction: function (dbquery, extraSqlAction) {
         let sqlStatements = dbquery.split(';');
 

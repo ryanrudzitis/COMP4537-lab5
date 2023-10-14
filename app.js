@@ -15,6 +15,25 @@ http.createServer((req, res) => {
     const pathName = parsedUrl.pathname;
 
     if (req.method === 'GET' && pathName === rootEndPoint) {
+        const query = parsedUrl.query;
+
+        if (!query.dbquery) {
+            res.statusCode = 400;
+            res.end(JSON.stringify({ message: 'Missing dbquery parameter' }));
+            return;
+        }
+
+        const dbquery = query.dbquery;
+
+        if (utils.invalidSqlAction(dbquery, 'INSERT')) {
+            res.statusCode = 400;
+            res.end(JSON.stringify({ message: 'Get request cannot contain DROP, DELETE, UPDATE, or INSERT statements' }));
+            return;
+        }
+
+        const mysql = utils.mysqlConnection();
+
+        utils.mysqlQuery(mysql, patientTableStatement, dbquery, res);
 
     } else if (req.method === 'POST' && pathName === rootEndPoint) {
         let body = '';

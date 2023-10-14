@@ -16,7 +16,7 @@ addRowButton.addEventListener('click', function() {
 
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      textArea.value = this.responseText;
+      textArea.value = this.responseText.message;
     }
   };
 
@@ -35,7 +35,7 @@ submitQueryButton.addEventListener('click', function() {
   } else if (firstWord.toUpperCase() === 'INSERT') {
     xhttp.open("POST", "http://localhost:5000/COMP4537/labs/5/api/v1/sql/", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhttp.send("dbquery=" + query);
+    xhttp.send("?dbquery=" + query);
   } else {
     responseP.textContent = INVALID_QUERY;
     responseP.style.color = "red";
@@ -43,7 +43,8 @@ submitQueryButton.addEventListener('click', function() {
 
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      responseP.textContent = this.responseText;
+      let response = JSON.parse(this.responseText);
+      responseP.textContent = response.message;
     }
   };
 
