@@ -1,7 +1,7 @@
 const http = require('http');
 const url = require('url');
 const utils = require('./modules/utils');
-
+const PORT = 6001
 const rootEndPoint = '/COMP4537/labs/5/api/v1/sql/';
 const patientTableStatement = 'CREATE TABLE IF NOT EXISTS Patient (PatientID INT NOT NULL AUTO_INCREMENT, Name VARCHAR(100) NOT NULL, DateOfBirth DATETIME NOT NULL, PRIMARY KEY(PatientID))';
 
@@ -69,4 +69,6 @@ http.createServer((req, res) => {
         );
     }
 
-}).listen(6001);
+}).listen(PORT);
+
+console.log()
