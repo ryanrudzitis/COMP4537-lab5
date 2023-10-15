@@ -6,13 +6,11 @@ const textArea = document.querySelector('#text-area');
 const submitQueryButton = document.querySelector('#submit-query-btn');
 const table = document.querySelector('#table');
 const xhttp = new XMLHttpRequest();
-const PORT = 5000
-
 
 addRowButton.addEventListener('click', function () {
   let query = "?dbquery=INSERT INTO Patient (Name, DateOfBirth) VALUES ('Sara Brown', '1901-01-01'), ('John Smith', '1941-01-01'), ('Jack Ma', '1961-01-30'), ('Elon Musk', '1999-01-01')";
 
-  xhttp.open("POST", `http://localhost:${PORT}/COMP4537/labs/5/api/v1/sql/`, true);
+  xhttp.open("POST", `http://nsinghsidhu12.com/COMP4537/labs/5/api/v1/sql/`, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhttp.send(query);
 
@@ -34,10 +32,10 @@ submitQueryButton.addEventListener('click', function () {
   const firstWord = query.split(' ')[0];
 
   if (firstWord.toUpperCase() === 'SELECT') {
-    xhttp.open("GET", `http://localhost:${PORT}/COMP4537/labs/5/api/v1/sql/?dbquery=` + query, true);
+    xhttp.open("GET", `http://nsinghsidhu12.com/COMP4537/labs/5/api/v1/sql/?dbquery=` + query, true);
     xhttp.send();
   } else if (firstWord.toUpperCase() === 'INSERT') {
-    xhttp.open("POST", `http://localhost:${PORT}/COMP4537/labs/5/api/v1/sql/`, true);
+    xhttp.open("POST", `http://nsinghsidhu12.com/COMP4537/labs/5/api/v1/sql/`, true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send("?dbquery=" + query);
   } else {
