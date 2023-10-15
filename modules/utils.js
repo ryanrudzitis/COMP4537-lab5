@@ -11,42 +11,12 @@ module.exports = {
         });
     },
 
-    mysqlExecStatement: function (mysql, patientTableStatement, dbquery, res) {
-        mysql.connect(err => {
-            if (err) {
-                res.statusCode = 500;
-                res.end(JSON.stringify({ message: 'Cannot connect to database' }));
-                return;
-            }
-
-            mysql.query(patientTableStatement, (err) => {
-                if (err) {
-                    res.statusCode = 400;
-                    res.end(JSON.stringify({ message: 'Invalid SQL statement' }));
-                    return;
-                }
-
-                mysql.query(dbquery, (err) => {
-                    if (err) {
-                        res.statusCode = 400;
-                        res.end(JSON.stringify({ message: 'Invalid SQL statement' }));
-                        return;
-                    }
-    
-                    res.end(JSON.stringify({ message: 'Statement executed successfully' }));
-                    mysql.end();
-                    return;
-                });
-            });
-        });
-    },
-
-    mysqlQuery: function (mysql, patientTableStatement, dbquery, res) {
+    mysqlExec: function (mysql, patientTableStatement, dbquery, res, method) {
         mysql.connect(err => {
             if (err) {
                 res.statusCode = 500;
                 console.log(err)
-                res.end(JSON.stringify({ message: 'Could not connect to the database' }));
+                res.end(JSON.stringify({ message: 'Cannot connect to the database' }));
                 return;
             }
 
@@ -63,8 +33,13 @@ module.exports = {
                         res.end(JSON.stringify({ message: 'Invalid SQL statement' }));
                         return;
                     }
-    
-                    res.end(JSON.stringify({ message: 'Statement executed successfully', result: results}));
+                    
+                    if (method === "GET") {
+                        res.end(JSON.stringify({ message: 'Statement executed successfully', result: results}));
+                    } else {
+                        res.end(JSON.stringify({ message: 'Statement executed successfully' }));
+                    }
+
                     mysql.end();
                     return;
                 });
@@ -78,7 +53,7 @@ module.exports = {
         for (let i = 0; i < sqlStatements.length; i++) {
             let sqlAction = sqlStatements[i].split(' ')[0].trim();
             sqlAction = sqlAction.toUpperCase();
-            if (sqlAction === 'DROP' || sqlAction === 'DELETE' || sqlAction === 'UPDATE' || sqlAction === extraSqlAction) {
+            if (sqlAction.includes('DROP') || sqlAction.includes('DELETE') || sqlAction.includes('UPDATE') || sqlAction.includes(extraSqlAction)) {
                 return true;
             }
         }

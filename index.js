@@ -6,17 +6,17 @@ const textArea = document.querySelector('#text-area');
 const submitQueryButton = document.querySelector('#submit-query-btn');
 const table = document.querySelector('#table');
 const xhttp = new XMLHttpRequest();
-const PORT = 6001
+const PORT = 5000
 
 
-addRowButton.addEventListener('click', function() {
+addRowButton.addEventListener('click', function () {
   let query = "?dbquery=INSERT INTO Patient (Name, DateOfBirth) VALUES ('Sara Brown', '1901-01-01'), ('John Smith', '1941-01-01'), ('Jack Ma', '1961-01-30'), ('Elon Musk', '1999-01-01')";
 
   xhttp.open("POST", `http://localhost:${PORT}/COMP4537/labs/5/api/v1/sql/`, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhttp.send(query);
 
-  xhttp.onreadystatechange = function() {
+  xhttp.onreadystatechange = function () {
     clearElements();
     if (this.readyState == 4 && this.status == 200) {
       console.log("response: " + this.responseText);
@@ -29,7 +29,7 @@ addRowButton.addEventListener('click', function() {
 
 });
 
-submitQueryButton.addEventListener('click', function() {
+submitQueryButton.addEventListener('click', function () {
   const query = textArea.value;
   const firstWord = query.split(' ')[0];
 
@@ -46,7 +46,7 @@ submitQueryButton.addEventListener('click', function() {
     responseP.style.color = "red";
   }
 
-  xhttp.onreadystatechange = function() {
+  xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       let response = JSON.parse(this.responseText);
       const rows = response.result;
