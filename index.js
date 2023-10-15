@@ -10,7 +10,7 @@ const xhttp = new XMLHttpRequest();
 const endpoint = "https://nsinghsidhu12.com/COMP4537/labs/5/api/v1/sql/";
 
 addRowButton.addEventListener('click', function () {
-  let query = `?dbquery=${INSERT_QUERY}`;
+  const query = `?dbquery=${INSERT_QUERY}`;
 
   xhttp.open("POST", `${endpoint}`, true);
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -48,7 +48,7 @@ submitQueryButton.addEventListener('click', function () {
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      let response = JSON.parse(this.responseText);
+      const response = JSON.parse(this.responseText);
       const rows = response.result;
       clearElements();
       responseP.textContent = response.message;
