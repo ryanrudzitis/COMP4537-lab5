@@ -7,7 +7,7 @@ const textArea = document.querySelector('#text-area');
 const submitQueryButton = document.querySelector('#submit-query-btn');
 const table = document.querySelector('#table');
 const xhttp = new XMLHttpRequest();
-const endpoint = "http://nsinghsidhu12.com/COMP4537/labs/5/api/v1/sql/";
+const endpoint = "https://nsinghsidhu12.com/COMP4537/labs/5/api/v1/sql/";
 
 addRowButton.addEventListener('click', function () {
   let query = `?dbquery=${INSERT_QUERY}`;
