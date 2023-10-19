@@ -4,6 +4,9 @@ const utils = require('./modules/utils');
 const PORT = 5000;
 const rootEndPoint = '/COMP4537/labs/5/api/v1/sql/';
 const patientTableStatement = 'CREATE TABLE IF NOT EXISTS Patient (PatientID INT NOT NULL AUTO_INCREMENT, Name VARCHAR(100) NOT NULL, DateOfBirth DATETIME NOT NULL, PRIMARY KEY(PatientID))';
+const missingDbQuery = 'Missing dbquery parameter';
+const badPostRequest = 'Post request cannot contain DROP, DELETE, UPDATE, or SELECT statements';
+const badGetRequest = 'Get request cannot contain DROP, DELETE, UPDATE, or INSERT statements';
 
 http.createServer((req, res) => {
     res.statusCode = 200;
@@ -20,7 +23,7 @@ http.createServer((req, res) => {
 
         if (!query.dbquery) {
             res.statusCode = 400;
-            res.end(JSON.stringify({ message: 'Missing dbquery parameter' }));
+            res.end(JSON.stringify({ message: missingDbQuery }));
             return;
         }
 
@@ -28,7 +31,7 @@ http.createServer((req, res) => {
 
         if (utils.invalidSqlAction(dbquery, 'INSERT')) {
             res.statusCode = 400;
-            res.end(JSON.stringify({ message: 'Get request cannot contain DROP, DELETE, UPDATE, or INSERT statements' }));
+            res.end(JSON.stringify({ message: badGetRequest }));
             return;
         }
 
@@ -56,7 +59,7 @@ http.createServer((req, res) => {
 
             if (!query.dbquery) {
                 res.statusCode = 400;
-                res.end(JSON.stringify({ message: 'Missing dbquery parameter' }));
+                res.end(JSON.stringify({ message: missingDbQuery }));
                 return;
             }
 
@@ -64,7 +67,7 @@ http.createServer((req, res) => {
 
             if (utils.invalidSqlAction(dbquery, 'SELECT')) {
                 res.statusCode = 400;
-                res.end(JSON.stringify({ message: 'Post request cannot contain DROP, DELETE, UPDATE, or SELECT statements' }));
+                res.end(JSON.stringify({ message: badPostRequest }));
                 return;
             }
 
