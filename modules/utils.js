@@ -20,12 +20,7 @@ module.exports = {
                 return;
             }
 
-            mysql.query(patientTableStatement, (err) => {
-                if (err) {
-                    res.statusCode = 400;
-                    res.end(JSON.stringify({ message: 'Invalid SQL statement' }));
-                    return;
-                }
+            mysql.query(patientTableStatement, () => {
 
                 mysql.query(dbquery, (err, results) => {
                     if (err) {
